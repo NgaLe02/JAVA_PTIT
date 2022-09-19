@@ -3,12 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vao_ra_file;
+package Khai_bao_lop_va_doi_tuong;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -18,54 +14,57 @@ import java.util.TreeSet;
  */
 public class WordSet {
 
-    private TreeSet<String> se;
+    private TreeSet<String> w;
 
-    public WordSet(TreeSet<String> se) {
-        this.se = se;
-    }
-
-    public WordSet(String s) throws FileNotFoundException {
-        Scanner sc = new Scanner(new File(s));
-        TreeSet<String> set = new TreeSet<>();
-        while (sc.hasNext()) {
-            set.add(sc.next().toLowerCase());
+    public WordSet(String s) {
+        this.w = new TreeSet<>();
+        s = s.toLowerCase();
+        String[] words = s.split("\\s+");
+        for (String x : words) {
+            this.w.add(x);
         }
-        this.se = set;
     }
 
+    public WordSet(TreeSet<String> w) {
+        this.w = w;
+    }
+
+    
     public WordSet union(WordSet another) {
-        TreeSet<String> ans = new TreeSet<>();
-        for (String x : se) {
-            ans.add(x);
+        TreeSet<String> hop = new TreeSet<>();
+        for(String x : this.w) {
+            hop.add(x);
         }
-        for (String x : another.se) {
-            ans.add(x);
+        for(String x : another.w) {
+            hop.add(x);
         }
-        return new WordSet(ans);
+        return new WordSet(hop);
     }
-
+    
     public WordSet intersection(WordSet another) {
-        TreeSet<String> ans = new TreeSet<>();
-        for (String x : se) {
-            if (another.se.contains(x)) {
-                ans.add(x);
+        TreeSet<String> giao = new TreeSet<>();
+        for(String x : this.w) {
+            if(another.w.contains(x)) {
+                giao.add(x);
             }
         }
-        return new WordSet(ans);
+        return new WordSet(giao);
     }
 
     @Override
     public String toString() {
-        String t = "";
-        for (String x : se) {
-            t += x + " ";
+        String res = "";
+        for(String x : this.w) {
+            res += x + " ";
         }
-        return t.trim();
+        return res.trim();
     }
 
-    public static void main(String[] args) throws IOException {
-        WordSet s1 = new WordSet("DATA1.in");
-        WordSet s2 = new WordSet("DATA2.in");
+    
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        WordSet s1 = new WordSet(in.nextLine());
+        WordSet s2 = new WordSet(in.nextLine());
         System.out.println(s1.union(s2));
         System.out.println(s1.intersection(s2));
     }

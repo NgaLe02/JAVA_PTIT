@@ -3,54 +3,54 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vao_ra_file;
+package Khai_bao_lop_va_doi_tuong;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Scanner;
 
 /**
  *
  * @author Dell E7440
  */
-public class Pair<a, b> {
+public class Pair<K, V> {
 
-    private a key;
-    private b value;
+    private K key;
+    private V value;
 
-    public Pair(a key, b value) {
+    public Pair(K key, V value) {
         this.key = key;
         this.value = value;
     }
 
-    public static boolean snt(int n) {
-        if (n < 2) {
+    public boolean isPrime() {
+        int x = Integer.parseInt(String.valueOf(key));
+        int y = Integer.parseInt(String.valueOf(value));
+        if (x < 2 || y < 2) {
             return false;
         }
-        for (int i = 2; i * i <= n; i++) {
-            if (n % i == 0) {
+
+        for (int i = 2; i * i <= x; i++) {
+            if (x % i == 0) {
                 return false;
             }
         }
-        return true;
-    }
-
-    public boolean isPrime() {
-        int t = Integer.parseInt(String.valueOf(key));
-        int t1 = Integer.parseInt(String.valueOf(value));
-        if (snt(t) && snt(t1)) {
-            return true;
+        for (int j = 2; j * j <= y; j++) {
+            if (y % j == 0) {
+                return false;
+            }
         }
-        return false;
+        
+        return true;
     }
 
     @Override
     public String toString() {
         return key + " " + value;
     }
+    
+    
 
-    public static void main(String[] args) throws IOException {
-        Scanner sc = new Scanner(new File("DATA.in"));
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         int t = sc.nextInt();
         while (t-- > 0) {
             int n = sc.nextInt();
