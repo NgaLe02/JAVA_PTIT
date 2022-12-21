@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Mang_Doi_Tuong;
+package MangDoiTuong;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -13,75 +14,58 @@ import java.util.Scanner;
  */
 public class J05064 {
 
-    private String maNgach, hoTen;
-    private int bacLuong, phuCap, thuNhap, luongCoBan;
+    String ma, ten;
+    int luongCB;
+    int bacLuong, phuCap, thuNhap;
 
-    static int demHT = 0;
-    static int demHP = 0;
-    static int dem = 0;
-
-    public J05064(String maNgach, String hoTen, int luongCoBan) {
-        this.maNgach = maNgach;
-        this.hoTen = hoTen;
-        this.luongCoBan = luongCoBan;
+    public J05064() {
     }
 
-    public void setBacLuong() {
-        this.bacLuong = Integer.parseInt(maNgach.substring(2, 4));
-    }
+    static int HT = 0, HP = 0;
 
-    public void setPhuCap() {
-        if (maNgach.startsWith("HT")) {
-            this.phuCap = 2000000;
-        } else if (maNgach.startsWith("HP")) {
-            this.phuCap = 900000;
-        } else if (maNgach.startsWith("GV")) {
-            this.phuCap = 500000;
-        }
-    }
-
-    public void setThuNhap() {
-        this.thuNhap = luongCoBan * bacLuong + phuCap;
+    public J05064(String ma, String ten, int luongCB) {
+        this.ma = ma;
+        this.ten = ten;
+        this.luongCB = luongCB;
+        bacLuong = Integer.parseInt(ma.substring(2));
+        if(ma.startsWith("GV")) phuCap = 500000;
+        else if(ma.startsWith("HP")) phuCap = 900000;
+        else if(ma.startsWith("HT")) phuCap = 2000000;
+        thuNhap = luongCB * bacLuong + phuCap;
     }
 
     @Override
     public String toString() {
-        return maNgach + " " + hoTen + " " + bacLuong + " " + phuCap + " " + thuNhap + "";
+        return ma + " " + ten + " " + bacLuong + " " + phuCap + " " + thuNhap;
     }
 
-    
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        J05064[] a = new J05064[n];
-        for (int i = 0; i < n; i++) {
-            sc.nextLine();
-            String maNgach = sc.nextLine();
-            String hoTen = sc.nextLine();
-            int luongCoBan = sc.nextInt();
-            if (maNgach.startsWith("HT")) {
-                demHT++;
-                if (demHT < 2) {
-                    a[dem++] = new J05064(maNgach, hoTen, luongCoBan);
+        ArrayList<J05064> a = new ArrayList<>();
+        int t = Integer.parseInt(sc.nextLine());
+        for (int i = 0; i < t; i++) {
+            String ma = sc.nextLine();
+            String ten = sc.nextLine();
+            int luong = Integer.parseInt(sc.nextLine());
+            int ok = 1;
+            if (ma.substring(0, 2).equals("HT")) {
+                HT++;
+                if (HT >= 2) {
+                    ok = 0;
                 }
-            } else if (maNgach.startsWith("HP")) {
-                demHP++;
-                if (demHP < 3) {
-                    a[dem++] = new J05064(maNgach, hoTen, luongCoBan);
+            } else if (ma.substring(0, 2).equals("HP")) {
+                HP++;
+                if (HP >= 3) {
+                    ok = 0;
                 }
-            } else {
-                a[dem++] = new J05064(maNgach, hoTen, luongCoBan);
             }
+            if (ok == 1) {
+                a.add(new J05064(ma, ten, luong));
+            }
+            
         }
-
-        for (int i = 0; i < dem; i++) {
-            a[i].setBacLuong();
-            a[i].setPhuCap();
-            a[i].setThuNhap();
-        }
-
-        for (int i = 0; i < dem; i++) {
-            System.out.println(a[i]);
+        for(J05064 x : a){
+            System.out.println(x);
         }
     }
 }

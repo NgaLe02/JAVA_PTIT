@@ -3,87 +3,55 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Mang_Doi_Tuong;
+package MangDoiTuong;
 
-import java.util.Arrays;
-import java.util.Comparator;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
 import java.util.Scanner;
 
 /**
  *
  * @author Dell E7440
  */
-public class J05007 {
+public class J05007 implements Comparable<J05007>{
 
-    private String ma, name, sexiual, date, address, tax, contract;
-    private int year, month, day;
-
-    public J05007(int stt, String name, String sexiual, String date, String address, String tax, String contract) {
-        this.ma = String.format("%05d", stt);
-        this.name = name;
-        this.sexiual = sexiual;
-        this.date = date;
-        this.address = address;
-        this.tax = tax;
-        this.contract = contract;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear() {
-        this.year = Integer.parseInt(date.substring(6));
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth() {
-        this.month = Integer.parseInt(date.substring(3, 5));
-    }
-
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay() {
-        this.day = Integer.parseInt(date.substring(0, 2));
-
+    String ma, ten, gt, ns, dc, mst, nkhd;
+    SimpleDateFormat date = new SimpleDateFormat("dd/mm/yyyy");
+    Date ngay = null;
+    public J05007(int ma, String ten, String gt, String ns, String dc, String mst, String nghd) throws ParseException {
+        this.ma = String.format("%05d", ma);
+        this.ten = ten;
+        this.gt = gt;
+        this.ns = ns;
+        ngay = date.parse(ns);
+        this.dc = dc;
+        this.mst = mst;
+        this.nkhd = nghd;
     }
 
     @Override
     public String toString() {
-        return ma + " " + name + " " + sexiual + " " + date + " "
-                + address + " " + tax + " " + contract;
+        return ma + " " + ten + " " + gt + " " + ns + " " + dc + " " + mst + " " + nkhd;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         Scanner sc = new Scanner(System.in);
         int n = Integer.parseInt(sc.nextLine());
-        J05007[] a = new J05007[n];
+        ArrayList<J05007> a = new ArrayList<>();
         for (int i = 0; i < n; i++) {
-            a[i] = new J05007(i + 1, sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine());
-            a[i].setDay();
-            a[i].setMonth();
-            a[i].setYear();
+            a.add(new J05007(i + 1, sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine(), sc.nextLine()));
         }
+        Collections.sort(a);
+        for(J05007 x : a){
+            System.out.println(x);
+        }
+    }
 
-        Arrays.sort(a, new Comparator<J05007>() {
-            @Override
-            public int compare(J05007 t, J05007 t1) {
-                if (t.getYear() != t1.getYear()) {
-                    return t.getYear() - t1.getYear();
-                }
-                if (t.getMonth() != t1.getMonth()) {
-                    return t.getMonth() - t1.getMonth();
-                }
-                return t.getDay() - t1.getDay();
-            }
-        });
-        for (int i = 0; i < n; i++) {
-            System.out.println(a[i]);
-        }
+    @Override
+    public int compareTo(J05007 t) {
+        return ngay.compareTo(t.ngay);
     }
 }

@@ -3,9 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Mang_Doi_Tuong;
+package MangDoiTuong;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.Scanner;
 
@@ -13,85 +14,66 @@ import java.util.Scanner;
  *
  * @author Dell E7440
  */
-public class J05054 {
-    private String maHS, hoTen, xepLoai;
-    private float gpa;
-    private int xepHang;
-    
-    static int thuTu = 0;
-    static int soHocSinh = 0;
-    static float gpaXepHang = 0;
+public class J05054 implements Comparable<J05054> {
 
-    public J05054(int maHS, String hoTen, float gpa) {
-        this.maHS = "HS" + String.format("%02d", maHS);
-        this.hoTen = hoTen;
-        this.gpa = gpa;
-    }
+    String ma, ten, xepLoai;
+    float diem;
+    int xepHang;
 
-    public void setXepLoai( ) {
-        if(gpa < 5) this.xepLoai = "Yeu";
-        else if(gpa < 7) this.xepLoai = "Trung Binh";
-        else if(gpa < 9) this.xepLoai = "Kha";
-        else this.xepLoai = "Gioi";
-    }
-
-    public void setXepHang( ) {
-        if(gpa != gpaXepHang) {
-            this.xepHang  = soHocSinh + 1;
-            gpaXepHang = gpa;
-            thuTu = soHocSinh;
-            soHocSinh ++;
-        }
-        else {
-            this.xepHang = thuTu + 1;
-            soHocSinh ++;
+    public J05054(int ma, String ten, float diem) {
+        this.ma = String.format("HS%02d", ma);
+        this.ten = ten;
+        this.diem = diem;
+        if (diem < 5) {
+            xepLoai = "Yeu";
+        } else if (diem < 7) {
+            xepLoai = "Trung Binh";
+        } else if (diem < 9) {
+            xepLoai = "Kha";
+        } else {
+            xepLoai = "Gioi";
         }
     }
 
-    public float getGpa() {
-        return gpa;
-    }
-
-    public String getMaHS() {
-        return maHS;
-    }
-
-    
     @Override
     public String toString() {
-        return maHS + " " + hoTen + " " + gpa + " " + xepLoai + " " + xepHang;
+        return ma + " " + ten + " " + String.format("%.1f", diem) + " " + xepLoai + " " + xepHang;
     }
-    
-    
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int n = Integer.parseInt(sc.nextLine());
-        J05054[] a = new J05054[n];
-        for(int i = 0; i < n; i++) {
-            a[i] = new J05054(i + 1, sc.nextLine(), Float.parseFloat(sc.nextLine()));
-            a[i].setXepLoai();
+        int t = Integer.parseInt(sc.nextLine());
+        ArrayList<J05054> a = new ArrayList<>();
+        for (int i = 0; i < t; i++) {
+            a.add(new J05054(i + 1, sc.nextLine(), Float.parseFloat(sc.nextLine())));
         }
-        
-        Arrays.sort(a, new Comparator<J05054>() {
+
+        Collections.sort(a);
+
+        a.get(0).xepHang = 1;
+        for (int i = 1; i < a.size(); i++) {
+            if (a.get(i).diem == a.get(i - 1).diem) {
+                a.get(i).xepHang = a.get(i - 1).xepHang;
+            } else {
+                a.get(i).xepHang = i + 1;
+            }
+        }
+
+        Collections.sort(a, new Comparator<J05054>() {
             @Override
-            public int compare(J05054 t, J05054 t1) {       
-                return Float.compare(t1.getGpa(), t.getGpa());
+            public int compare(J05054 t, J05054 t1) {
+                return t.ma.compareTo(t1.ma);
             }
         });
-       
-        for(int i = 0; i < n; i++) {
-             a[i].setXepHang();
-         }
-        
-        Arrays.sort(a, new Comparator<J05054>() {
-            @Override
-            public int compare(J05054 t, J05054 t1) {       
-                return t.getMaHS().compareTo(t1.getMaHS());
-            }
-        });
-        
-         for(int i = 0; i < n; i++) {
-             System.out.println(a[i]);
-         }
+
+        for (J05054 x : a) {
+            System.out.println(x);
+        }
+
+    }
+
+    @Override
+    public int compareTo(J05054 t) {
+        return Float.compare(t.diem, diem);
     }
 }
