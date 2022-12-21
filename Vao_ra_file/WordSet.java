@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vao_ra_file;
+package VaoRaFile;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.TreeSet;
 
@@ -18,54 +17,49 @@ import java.util.TreeSet;
  */
 public class WordSet {
 
-    private TreeSet<String> se;
-
-    public WordSet(TreeSet<String> se) {
-        this.se = se;
-    }
+    TreeSet<String> se;
 
     public WordSet(String s) throws FileNotFoundException {
         Scanner sc = new Scanner(new File(s));
-        TreeSet<String> set = new TreeSet<>();
+        TreeSet<String> tmp = new TreeSet<>();
         while (sc.hasNext()) {
-            set.add(sc.next().toLowerCase());
+            tmp.add(sc.next().toLowerCase());
         }
-        this.se = set;
+        this.se = tmp;
     }
 
-    public WordSet union(WordSet another) {
-        TreeSet<String> ans = new TreeSet<>();
-        for (String x : se) {
-            ans.add(x);
-        }
-        for (String x : another.se) {
-            ans.add(x);
-        }
-        return new WordSet(ans);
-    }
-
-    public WordSet intersection(WordSet another) {
-        TreeSet<String> ans = new TreeSet<>();
+    public String intersection(WordSet another) {
+        TreeSet<String> tmp = new TreeSet<>();
         for (String x : se) {
             if (another.se.contains(x)) {
-                ans.add(x);
+                tmp.add(x);
             }
         }
-        return new WordSet(ans);
+        String s = "";
+        for (String x : tmp) {
+            s += x + " ";
+        }
+        return s.trim();
     }
 
-    @Override
-    public String toString() {
-        String t = "";
+    public String union(WordSet another) {
+        TreeSet<String> tmp = new TreeSet<>();
         for (String x : se) {
-            t += x + " ";
+            tmp.add(x);
         }
-        return t.trim();
+        for (String x : another.se) {
+            tmp.add(x);
+        }
+        String s = "";
+        for (String x : tmp) {
+            s += x + " ";
+        }
+        return s.trim();
     }
 
     public static void main(String[] args) throws IOException {
-        WordSet s1 = new WordSet("DATA1.in");
-        WordSet s2 = new WordSet("DATA2.in");
+        WordSet s1 = new WordSet("src/VaoRaFile/DATA1.in");
+        WordSet s2 = new WordSet("src/VaoRaFile/DATA2.in");
         System.out.println(s1.union(s2));
         System.out.println(s1.intersection(s2));
     }

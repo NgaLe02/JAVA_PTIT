@@ -1,65 +1,60 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Vao_ra_file;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
-
+package VaoRaFile;
+import java.io.*;
+import java.util.*;
 /**
  *
  * @author Dell E7440
  */
 public class J07010 {
+    String maSV, hoTen, lop, ngaySinh;
+    double diem;
 
-    private String ma, ten, lop, ngaySinh;
-    private double diem;
-
-    public J07010() {
-    }
-
-    public J07010(int ma, String ten, String lop, String ngaySinh, double diem) {
-        this.ma = String.format("B20DCCN%03d", ma);
-        this.ten = ten;
+    public J07010(int maSV, String hoTen, String lop, String ngaySinh, double diem) {
+        this.maSV = String.format("B20DCCN%03d", maSV);
+        this.hoTen = chuanHoaTen(hoTen);
         this.lop = lop;
-        this.ngaySinh = ngaySinh;
+        this.ngaySinh = chuanHoaNgay(ngaySinh);
         this.diem = diem;
     }
-
-    public static String chuanHoaNgaySinh(String s) {
+    @Override
+    public String toString() {
+        return maSV + " " + hoTen + " " + lop + " " + ngaySinh + " " + String.format("%.2f", diem);
+    }
+    
+    public static String chuanHoaNgay(String s){
         StringBuilder sb = new StringBuilder(s);
-        if (sb.charAt(1) == '/') {
+        if(sb.charAt(1) == '/'){
             sb.insert(0, '0');
         }
-        if (sb.charAt(4) == '/') {
-            sb.insert(3, '0');
+        if(sb.charAt(4) == '/'){
+            sb.insert(3,'0');
         }
         return sb.toString();
     }
-
-    @Override
-    public String toString() {
-        return ma + " " + ten + " " + lop + " " + ngaySinh + " " + String.format("%.2f", diem);
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        File file = new File("SV.in");
-        Scanner sc = new Scanner(file);
-        int n = Integer.parseInt(sc.nextLine());
-        J07010[] a = new J07010[n];
-        for (int i = 0; i < n; i++) {
-            String ten = sc.nextLine();
-            String lop = sc.nextLine();
-            String ngaySinh = sc.nextLine();
-            double diem = Double.parseDouble(sc.nextLine());
-            a[i] = new J07010(i + 1, ten, lop, chuanHoaNgaySinh(ngaySinh), diem);
+    
+    public static String chuanHoaTen(String s){
+        String t = s.toLowerCase().trim();
+        String[] words = t.split("\\s+");
+        t = "";
+        for(String x : words){
+            t += String.valueOf(x.charAt(0)).toUpperCase() + x.substring(1) + " ";
         }
-
-        for (int i = 0; i < n; i++) {
-            System.out.println(a[i]);
+        return t.trim();
+    }
+  
+    public static void main(String[] args) throws FileNotFoundException {
+        Scanner sc = new Scanner(new File("src/VaoRaFile/SV.in"));
+        int t = Integer.parseInt(sc.nextLine());
+        ArrayList<J07010> a = new ArrayList<>();
+        for(int i = 0; i < t; i++){
+            a.add(new J07010(i + 1, sc.nextLine(), sc.nextLine(), sc.nextLine(), Double.parseDouble(sc.nextLine())));
+        }
+        for(J07010 x : a){
+            System.out.println(x);
         }
     }
 }
